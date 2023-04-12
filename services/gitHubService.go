@@ -4,11 +4,12 @@ import (
 	"context"
 	"os"
 
+	"log"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/repository"
 	"github.com/nepackage/nepackage/utils"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
@@ -34,10 +35,10 @@ func CreateGitHubRemoteRepository(repositoryName string, isPrivate bool) (reposi
 	}
 	createdRepo, _, err := GitHubClient().Repositories.Create(ctx, "", repository)
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 		return "", err
 	}
-	log.Debug("repository created at: ", *createdRepo.HTMLURL)
+	log.Println("repository created at: ", *createdRepo.HTMLURL)
 
 	return *createdRepo.HTMLURL, nil
 }
@@ -45,12 +46,12 @@ func CreateGitHubRemoteRepository(repositoryName string, isPrivate bool) (reposi
 func PushLocalRepositoryToGitHub(path string, remoteUrl string) (err error) { // Create a repository model
 	systemUsername, err := utils.GetCurrentUser()
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 		return err
 	}
 	repository, err := git.PlainOpen(path)
 	if err != nil {
-		log.Error("error opening repository ", err.Error())
+		log.Println("error opening repository ", err.Error())
 		return err
 	}
 
@@ -59,7 +60,7 @@ func PushLocalRepositoryToGitHub(path string, remoteUrl string) (err error) { //
 		URLs: []string{remoteUrl},
 	})
 	if err != nil {
-		log.Error("error adding remote to repository ", err.Error())
+		log.Println("error adding remote to repository ", err.Error())
 		return err
 	}
 
@@ -72,7 +73,7 @@ func PushLocalRepositoryToGitHub(path string, remoteUrl string) (err error) { //
 		},
 	})
 	if err != nil {
-		log.Error("error pushing repository ", err.Error())
+		log.Println("error pushing repository ", err.Error())
 		return err
 	}
 
@@ -82,7 +83,7 @@ func PushLocalRepositoryToGitHub(path string, remoteUrl string) (err error) { //
 func FindAllGhCredentials() ([]models.GithubCredential, error) {
 	ghCredentials, err := repository.GetGitHubCredentials()
 	if err != nil {
-		log.Error("error getting github credentials. Error: ", err)
+		log.Println("error getting github credentials. Error: ", err)
 		return nil, err
 	}
 	return ghCredentials, nil
@@ -91,7 +92,7 @@ func FindAllGhCredentials() ([]models.GithubCredential, error) {
 func FindAllGhCredentialById(ghCredentialId uint) (*models.GithubCredential, error) {
 	ghCredential, err := repository.GetGitHubCredentialById(ghCredentialId)
 	if err != nil {
-		log.Error("error getting github credential. Error: ", err)
+		log.Println("error getting github credential. Error: ", err)
 		return nil, err
 	}
 	return ghCredential, nil
@@ -100,7 +101,7 @@ func FindAllGhCredentialById(ghCredentialId uint) (*models.GithubCredential, err
 func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*models.GithubCredential, error) {
 	encryptedPassword, err := utils.EncryptString(ghCredential.Password, os.Getenv("JWTKEY"))
 	if err != nil {
-		log.Error("error encrypting password credential", err.Error())
+		log.Println("error encrypting password credential", err.Error())
 		return nil, err
 	}
 
@@ -108,9 +109,9 @@ func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*model
 
 	ghCredentialCreated, err := repository.CreateGitHubCredential(ghCredential)
 	if err != nil {
-		log.Error("error creating github credential. Error: ", err)
+		log.Println("error creating github credential. Error: ", err)
 		return nil, err
 	}
-	log.Info("github credential created Id: ", ghCredentialCreated.ID)
+	log.Println("github credential created Id: ", ghCredentialCreated.ID)
 	return ghCredentialCreated, nil
 }

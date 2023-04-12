@@ -5,43 +5,44 @@ import (
 	"os/exec"
 	"time"
 
+	"log"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/nepackage/nepackage/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 func InitLocalRepository(path string) (err error) { // Create a repository model
 	os.Chdir(path)
 	initRepo := exec.Command("git", "init")
 	if err := initRepo.Run(); err != nil {
-		log.Error("could not init git local repository: ", err)
+		log.Println("could not init git local repository: ", err)
 		return err
 	}
-	log.Debug(initRepo)
+	log.Println(initRepo)
 	return nil
 }
 
 func FirstCommitLocalRepository(path string) (err error) { // Create a repository model
 	systemUsername, err := utils.GetCurrentUser()
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 		return err
 	}
 	repository, err := git.PlainOpen(path)
 	if err != nil {
-		log.Error("error opening git repository", err.Error())
+		log.Println("error opening git repository", err.Error())
 		return err
 	}
 	repositoryWorktree, err := repository.Worktree()
 	if err != nil {
-		log.Error("error getting repository worktree", err.Error())
+		log.Println("error getting repository worktree", err.Error())
 		return err
 	}
 
 	_, err = repositoryWorktree.Add(".")
 	if err != nil {
-		log.Error("error adding files to stage area ", err.Error())
+		log.Println("error adding files to stage area ", err.Error())
 	}
 
 	commit, err := repositoryWorktree.Commit("initial commit", &git.CommitOptions{
@@ -52,8 +53,8 @@ func FirstCommitLocalRepository(path string) (err error) { // Create a repositor
 		},
 	})
 	if err != nil {
-		log.Error("error creating first commit ", err.Error())
+		log.Println("error creating first commit ", err.Error())
 	}
-	log.Debug(commit)
+	log.Println(commit)
 	return nil
 }

@@ -1,11 +1,11 @@
 package repository
 
 import (
+	"log"
 	"os"
 
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 func GetGitHubCredentials() ([]models.GithubCredential, error) {
@@ -47,13 +47,13 @@ func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.Github
 	if ghCredentialInput.Password != "" {
 		newEcryptedPassword, err := utils.EncryptString(ghCredentialInput.Password, os.Getenv("JWTKEY"))
 		if err != nil {
-			log.Error("error encrypting new password ", err.Error())
+			log.Println("error encrypting new password ", err.Error())
 			return nil, err
 		}
 		ghCredentialInput.Password = newEcryptedPassword
 	}
 	if err := models.DB.Table("github_credentials").Where("id = ?", ghCredentialId).Model(&ghCredential).Updates(ghCredentialInput).Error; err != nil {
-		log.Error("error updating github credential", err.Error())
+		log.Println("error updating github credential", err.Error())
 		return nil, err
 	}
 	ghCredentialUpdated := models.GithubCredential{
@@ -64,6 +64,6 @@ func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.Github
 		CreatedAt: ghCredential.CreatedAt,
 		UpdatedAt: ghCredential.UpdatedAt,
 	}
-	log.Info("github credential updated")
+	log.Println("github credential updated")
 	return &ghCredentialUpdated, nil
 }

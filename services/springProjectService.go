@@ -4,7 +4,7 @@ import (
 	"os"
 	"os/exec"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/nepackage/nepackage/models"
@@ -19,14 +19,14 @@ func SpringProjectGenerator(springProject models.SpringProject) (springProjectOu
 	}
 
 	cmd := exec.Command("spring", "init", "--artifactId="+springProject.ArtifactId, "--bootVersion="+springProject.BootVersion, `--description="`+springProject.Description+`"`, "--groupId="+springProject.GroupId, "--javaVersion="+springProject.JavaVersion, "--language="+springProject.Language, "--name="+springProject.Name, "--packageName="+springProject.PackageName, "--packaging="+springProject.Packaging, "--type="+springProject.Type, "--version="+springProject.Version, uuidProject)
-	log.Info(cmd)
+	log.Println(cmd)
 
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		log.Error("could not run command: ", err)
+		log.Println("could not run command: ", err)
 		return nil, "", err
 	}
 
-	log.Info("Project created in: ", tmpFolderCreation)
+	log.Println("Project created in: ", tmpFolderCreation)
 	return &springProject, tmpFolderCreation, nil
 }

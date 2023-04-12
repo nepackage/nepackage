@@ -4,7 +4,6 @@ import (
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/routes"
 	"github.com/nepackage/nepackage/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -14,7 +13,6 @@ func main() {
 	utils.GroupAdminCreation()
 	utils.AdminCreation()
 	router := routes.InitRouter()
-	log.SetFormatter(&log.JSONFormatter{})
 	router.Run()
 
 }

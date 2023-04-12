@@ -3,8 +3,8 @@ package utils
 import (
 	"errors"
 
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/repository"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/repository"
 )
 
 func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {

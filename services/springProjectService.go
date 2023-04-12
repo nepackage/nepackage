@@ -7,8 +7,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/google/uuid"
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/utils"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/utils"
 )
 
 func SpringProjectGenerator(springProject models.SpringProject) (springProjectOut *models.SpringProject, projectPath string, err error) {

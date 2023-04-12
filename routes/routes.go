@@ -2,9 +2,9 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/nepackage/controllers"
-	"github.com/otisnado/nepackage/docs"
-	"github.com/otisnado/nepackage/middlewares"
+	"github.com/nepackage/nepackage/controllers"
+	"github.com/nepackage/nepackage/docs"
+	"github.com/nepackage/nepackage/middlewares"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

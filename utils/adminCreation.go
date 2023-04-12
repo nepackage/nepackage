@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/otisnado/nepackage/models"
+	"github.com/nepackage/nepackage/models"
 )
 
 func AdminCreation() {

@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 
-	"github.com/otisnado/nepackage/models"
+	"github.com/nepackage/nepackage/models"
 )
 
 func CheckIfMailExists(mailInput string) error {

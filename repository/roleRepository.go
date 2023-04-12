@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/otisnado/nepackage/models"
+import "github.com/nepackage/nepackage/models"
 
 func GetRoles() ([]models.Role, error) {
 	var roles []models.Role

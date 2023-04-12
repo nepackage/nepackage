@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/otisnado/nepackage/models"
+	"github.com/nepackage/nepackage/models"
 )
 
 func GetGroups() ([]models.Group, error) {

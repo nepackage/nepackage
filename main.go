@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/routes"
-	"github.com/otisnado/nepackage/utils"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/routes"
+	"github.com/nepackage/nepackage/utils"
 	log "github.com/sirupsen/logrus"
 )
 

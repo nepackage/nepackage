@@ -5,8 +5,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/repository"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/repository"
 )
 
 // FindGroups		godoc

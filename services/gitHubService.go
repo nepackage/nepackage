@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/go-git/go-git/v5"
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/repository"
-	"github.com/otisnado/nepackage/utils"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/repository"
+	"github.com/nepackage/nepackage/utils"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/go-git/go-git/v5/config"

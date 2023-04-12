@@ -1,4 +1,4 @@
-module github.com/otisnado/nepackage
+module github.com/nepackage/nepackage
 
 go 1.18
 

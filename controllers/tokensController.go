@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/otisnado/nepackage/auth"
-	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/repository"
+	"github.com/nepackage/nepackage/auth"
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/repository"
 )
 
 // GenerateToken	godoc

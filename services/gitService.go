@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/otisnado/nepackage/utils"
+	"github.com/nepackage/nepackage/utils"
 	log "github.com/sirupsen/logrus"
 )
 

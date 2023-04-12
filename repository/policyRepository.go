@@ -65,3 +65,12 @@ func GetPoliciesWithMatchedPath(policiesID []int, path string) ([]models.Policy,
 
 	return policies, nil
 }
+
+func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {
+	var rolePolicies []models.Policy
+	rolePolicies, err := GetPoliciesByIDs(policiesIDs)
+	if err != nil {
+		return nil, err
+	}
+	return rolePolicies, nil
+}

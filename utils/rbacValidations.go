@@ -4,17 +4,7 @@ import (
 	"errors"
 
 	"github.com/nepackage/nepackage/models"
-	"github.com/nepackage/nepackage/repository"
 )
-
-func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {
-	var rolePolicies []models.Policy
-	rolePolicies, err := repository.GetPoliciesByIDs(policiesIDs)
-	if err != nil {
-		return nil, err
-	}
-	return rolePolicies, nil
-}
 
 func GetPoliciesWithMatchedPath(rolePolicies []models.Policy, urlPathRequested string) (matched []models.Policy, err error) {
 	var policiesMatched []models.Policy

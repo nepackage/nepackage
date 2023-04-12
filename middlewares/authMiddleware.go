@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nepackage/nepackage/auth"
+	"github.com/nepackage/nepackage/repository"
 	"github.com/nepackage/nepackage/utils"
 )
 
@@ -32,7 +33,7 @@ func Auth() gin.HandlerFunc {
 		userRoles := utils.ConvertStringToUintStruct(jwtClaims.Role)
 		pathRequested := c.Request.URL.Path
 		methodRequested := c.Request.Method
-		rolePolicies, err := utils.GetRolePolicies(userRoles)
+		rolePolicies, err := repository.GetRolePolicies(userRoles)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			c.Abort()

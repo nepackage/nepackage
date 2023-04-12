@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/otisnado/nepackage/models"
+	"github.com/otisnado/nepackage/repository"
 	"github.com/otisnado/nepackage/utils"
 	log "github.com/sirupsen/logrus"
 
@@ -75,4 +77,40 @@ func PushLocalRepositoryToGitHub(path string, remoteUrl string) (err error) { //
 	}
 
 	return nil
+}
+
+func FindAllGhCredentials() ([]models.GithubCredential, error) {
+	ghCredentials, err := repository.GetGitHubCredentials()
+	if err != nil {
+		log.Error("error getting github credentials. Error: ", err)
+		return nil, err
+	}
+	return ghCredentials, nil
+}
+
+func FindAllGhCredentialById(ghCredentialId uint) (*models.GithubCredential, error) {
+	ghCredential, err := repository.GetGitHubCredentialById(ghCredentialId)
+	if err != nil {
+		log.Error("error getting github credential. Error: ", err)
+		return nil, err
+	}
+	return ghCredential, nil
+}
+
+func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*models.GithubCredential, error) {
+	encryptedPassword, err := utils.EncryptString(ghCredential.Password, os.Getenv("JWTKEY"))
+	if err != nil {
+		log.Error("error encrypting password credential", err.Error())
+		return nil, err
+	}
+
+	ghCredential.Password = encryptedPassword
+
+	ghCredentialCreated, err := repository.CreateGitHubCredential(ghCredential)
+	if err != nil {
+		log.Error("error creating github credential. Error: ", err)
+		return nil, err
+	}
+	log.Info("github credential created Id: ", ghCredentialCreated.ID)
+	return ghCredentialCreated, nil
 }

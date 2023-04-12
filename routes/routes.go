@@ -130,6 +130,19 @@ func InitRouter() *gin.Engine {
 
 			// Delete a policy --> id is required
 			secure.DELETE("/policies/:id", controllers.DeletePolicy)
+
+			/* Credentials routes */
+
+			/* GitHub credentials routes */
+
+			// Find all GitHub credentials
+			secure.GET("/credentials/github", controllers.FindGitHubCredentials)
+
+			// Find a GitHub credential by id
+			secure.GET("/credentials/github/:id", controllers.FindGitHubCredentialById)
+
+			// Create a GitHub credential
+			secure.POST("/credentials/github", controllers.CreateGitHubCredential)
 		}
 	}
 

@@ -21,7 +21,7 @@ func ConnectDatabase() {
 			log.Fatalln(err)
 		}
 
-		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{})
+		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{}, GithubCredential{})
 		if err != nil {
 			return
 		}
@@ -32,7 +32,7 @@ func ConnectDatabase() {
 			log.Fatalln(err)
 		}
 
-		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{})
+		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{}, GithubCredential{})
 		if err != nil {
 			return
 		}

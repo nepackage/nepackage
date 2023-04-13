@@ -6,6 +6,7 @@ import (
 
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/utils"
+	"gorm.io/gorm/clause"
 )
 
 func GetGitHubCredentials() ([]models.GithubCredential, error) {
@@ -42,7 +43,7 @@ func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*model
 	return &ghCredentialCreated, nil
 }
 
-func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.GithubCredentialUpdate) (*models.GithubCredential, error) {
+func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.GithubCredentialUpdate) (*models.GithubCredentialUpdate, error) {
 	var ghCredential models.GithubCredential
 	if ghCredentialInput.Password != "" {
 		newEcryptedPassword, err := utils.EncryptString(ghCredentialInput.Password, os.Getenv("JWTKEY"))
@@ -52,18 +53,23 @@ func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.Github
 		}
 		ghCredentialInput.Password = newEcryptedPassword
 	}
-	if err := models.DB.Table("github_credentials").Where("id = ?", ghCredentialId).Model(&ghCredential).Updates(ghCredentialInput).Error; err != nil {
+	if err := models.DB.Table("github_credentials").Clauses(clause.Returning{}).Where("id = ?", ghCredentialId).Model(&ghCredential).Updates(ghCredentialInput).Error; err != nil {
 		log.Println("error updating github credential", err.Error())
 		return nil, err
 	}
-	ghCredentialUpdated := models.GithubCredential{
-		ID:        ghCredential.ID,
-		Name:      ghCredential.Name,
-		Username:  ghCredential.Username,
-		State:     ghCredential.State,
-		CreatedAt: ghCredential.CreatedAt,
-		UpdatedAt: ghCredential.UpdatedAt,
+
+	log.Println("github credential updated with Id: ", ghCredentialId, " was updated")
+	return &ghCredentialInput, nil
+}
+
+func DeleteGitHubCredential(ghCredentialId uint) (bool, error) {
+	var ghCredential models.GithubCredential
+	if err := models.DB.Where("id = ?", ghCredentialId).First(&ghCredential).Error; err != nil {
+		return false, err
 	}
-	log.Println("github credential updated")
-	return &ghCredentialUpdated, nil
+	if err := models.DB.Delete(&ghCredential).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
 }

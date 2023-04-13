@@ -143,6 +143,12 @@ func InitRouter() *gin.Engine {
 
 			// Create a GitHub credential
 			secure.POST("/credentials/github", controllers.CreateGitHubCredential)
+
+			// Update a GitHub credential
+			secure.PATCH("/credentials/github/:id", controllers.UpdateGitHubCredential)
+
+			// Delete a GitHub credential
+			secure.DELETE("/credentials/github/:id", controllers.DeleteGitHubCredential)
 		}
 	}
 

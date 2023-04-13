@@ -115,3 +115,23 @@ func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*model
 	log.Println("github credential created Id: ", ghCredentialCreated.ID)
 	return ghCredentialCreated, nil
 }
+
+func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.GithubCredentialUpdate) (*models.GithubCredentialUpdate, error) {
+	ghCredentialUpdated, err := repository.UpdateGitHubCredential(ghCredentialId, ghCredentialInput)
+	if err != nil {
+		log.Println("error updating github credential: ", err.Error())
+		return nil, err
+	}
+
+	return ghCredentialUpdated, nil
+
+}
+
+func DeleteGitHubCredential(ghCredentialId uint) (bool, error) {
+	state, err := repository.DeleteGitHubCredential(ghCredentialId)
+	if err != nil {
+		log.Println("error deleting github credential: ", ghCredentialId)
+		return state, err
+	}
+	return state, nil
+}

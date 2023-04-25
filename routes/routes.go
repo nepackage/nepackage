@@ -149,6 +149,23 @@ func InitRouter() *gin.Engine {
 
 			// Delete a GitHub credential
 			secure.DELETE("/credentials/github/:id", controllers.DeleteGitHubCredential)
+
+			/* Providers */
+
+			// Find all providers
+			secure.GET("/providers", controllers.FindProviders)
+
+			// Find provider by Id
+			secure.GET("/providers/:id", controllers.FindProviderById)
+
+			// Create a provider
+			secure.POST("/providers", controllers.CreateProvider)
+
+			// Update provider data
+			secure.PATCH("/providers/:id", controllers.UpdateProvider)
+
+			// Delete provider with given Id
+			secure.DELETE("/providers/:id", controllers.DeleteProvider)
 		}
 	}
 

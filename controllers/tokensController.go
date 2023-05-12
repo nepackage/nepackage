@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"github.com/nepackage/nepackage/auth"
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/repository"
 )
@@ -33,7 +34,7 @@ func GenerateToken(c *gin.Context) {
 	}
 
 	// Check if mail exists and password is correct
-	record := models.DB.Where("mail = ?", request.Mail).First(&user)
+	record := database.DB.Where("mail = ?", request.Mail).First(&user)
 	if record.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		c.Abort()

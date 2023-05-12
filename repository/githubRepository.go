@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/utils"
 	"gorm.io/gorm/clause"
@@ -11,7 +12,7 @@ import (
 
 func GetGitHubCredentials() ([]models.GithubCredential, error) {
 	var githubCredentials []models.GithubCredential
-	if err := models.DB.Find(&githubCredentials).Error; err != nil {
+	if err := database.DB.Find(&githubCredentials).Error; err != nil {
 		return nil, err
 	}
 	return githubCredentials, nil
@@ -19,14 +20,14 @@ func GetGitHubCredentials() ([]models.GithubCredential, error) {
 
 func GetGitHubCredentialById(ghCredentialId uint) (*models.GithubCredential, error) {
 	var ghCredential *models.GithubCredential
-	if err := models.DB.Where("id = ?", ghCredentialId).First(&ghCredential).Error; err != nil {
+	if err := database.DB.Where("id = ?", ghCredentialId).First(&ghCredential).Error; err != nil {
 		return nil, err
 	}
 	return ghCredential, nil
 }
 
 func CreateGitHubCredential(ghCredential *models.GithubCredentialCreate) (*models.GithubCredential, error) {
-	if err := models.DB.Table("github_credentials").Create(&ghCredential).Error; err != nil {
+	if err := database.DB.Table("github_credentials").Create(&ghCredential).Error; err != nil {
 		return nil, err
 	}
 
@@ -53,7 +54,7 @@ func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.Github
 		}
 		ghCredentialInput.Password = newEcryptedPassword
 	}
-	if err := models.DB.Table("github_credentials").Clauses(clause.Returning{}).Where("id = ?", ghCredentialId).Model(&ghCredential).Updates(ghCredentialInput).Error; err != nil {
+	if err := database.DB.Table("github_credentials").Clauses(clause.Returning{}).Where("id = ?", ghCredentialId).Model(&ghCredential).Updates(ghCredentialInput).Error; err != nil {
 		log.Println("error updating github credential", err.Error())
 		return nil, err
 	}
@@ -64,10 +65,10 @@ func UpdateGitHubCredential(ghCredentialId uint, ghCredentialInput models.Github
 
 func DeleteGitHubCredential(ghCredentialId uint) (bool, error) {
 	var ghCredential models.GithubCredential
-	if err := models.DB.Where("id = ?", ghCredentialId).First(&ghCredential).Error; err != nil {
+	if err := database.DB.Where("id = ?", ghCredentialId).First(&ghCredential).Error; err != nil {
 		return false, err
 	}
-	if err := models.DB.Delete(&ghCredential).Error; err != nil {
+	if err := database.DB.Delete(&ghCredential).Error; err != nil {
 		return false, err
 	}
 

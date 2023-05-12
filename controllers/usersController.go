@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nepackage/nepackage/models"
 	"github.com/nepackage/nepackage/repository"
-	"github.com/nepackage/nepackage/utils"
 )
 
 // FindUsers		godoc
@@ -69,12 +68,12 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	if err := utils.CheckIfMailExists(input.Mail); err != nil {
+	if err := repository.CheckIfMailExists(input.Mail); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := utils.CheckIfUsernameExists(input.Username); err != nil {
+	if err := repository.CheckIfUsernameExists(input.Username); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -105,3 +105,10 @@ func DecryptString(text, secret string) (string, error) {
 	cfb.XORKeyStream(plainText, cipherText)
 	return string(plainText), nil
 }
+
+func EnvExist(key string) bool {
+	if _, ok := os.LookupEnv(key); ok {
+		return true
+	}
+	return false
+}

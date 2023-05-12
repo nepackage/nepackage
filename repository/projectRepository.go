@@ -1,12 +1,13 @@
 package repository
 
 import (
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/models"
 )
 
 func GetProjects() ([]models.Project, error) {
 	var projects []models.Project
-	if err := models.DB.Find(&projects).Error; err != nil {
+	if err := database.DB.Find(&projects).Error; err != nil {
 		return nil, err
 	}
 	return projects, nil
@@ -14,7 +15,7 @@ func GetProjects() ([]models.Project, error) {
 
 func GetProjectById(projectId uint) (*models.Project, error) {
 	var project *models.Project
-	if err := models.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
+	if err := database.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
 		return nil, err
 	}
 
@@ -22,7 +23,7 @@ func GetProjectById(projectId uint) (*models.Project, error) {
 }
 
 func CreateProject(project *models.Project) (bool, error) {
-	if err := models.DB.Create(&project).Error; err != nil {
+	if err := database.DB.Create(&project).Error; err != nil {
 		return false, err
 	}
 
@@ -32,7 +33,7 @@ func CreateProject(project *models.Project) (bool, error) {
 func UpdateProject(projectId uint, projectInput models.ProjectUpdate) (*models.ProjectUpdate, error) {
 	var project models.Project
 
-	if err := models.DB.Where("id = ?", projectId).Model(&project).Updates(projectInput).Error; err != nil {
+	if err := database.DB.Where("id = ?", projectId).Model(&project).Updates(projectInput).Error; err != nil {
 		return nil, err
 	}
 
@@ -41,10 +42,10 @@ func UpdateProject(projectId uint, projectInput models.ProjectUpdate) (*models.P
 
 func DeleteProject(projectId uint) (bool, error) {
 	var project models.Project
-	if err := models.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
+	if err := database.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
 		return false, err
 	}
-	if err := models.DB.Delete(&project).Error; err != nil {
+	if err := database.DB.Delete(&project).Error; err != nil {
 		return false, err
 	}
 

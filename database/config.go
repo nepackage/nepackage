@@ -1,9 +1,11 @@
-package models
+package database
 
 import (
 	"log"
 	"os"
 
+	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -13,7 +15,7 @@ var DB *gorm.DB
 
 func ConnectDatabase() {
 
-	if os.Getenv("DSN") != "" {
+	if os.Getenv("DSN") != "" || utils.EnvExist("DSN") {
 		dsn := os.Getenv("DSN")
 		log.Println(dsn)
 		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -21,7 +23,7 @@ func ConnectDatabase() {
 			log.Fatalln(err)
 		}
 
-		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{}, GithubCredential{}, Provider{})
+		err = db.AutoMigrate(models.Project{}, models.Language{}, models.User{}, models.Group{}, models.Role{}, models.Policy{}, models.GithubCredential{}, models.Provider{})
 		if err != nil {
 			return
 		}
@@ -32,7 +34,7 @@ func ConnectDatabase() {
 			log.Fatalln(err)
 		}
 
-		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{}, GithubCredential{}, Provider{})
+		err = db.AutoMigrate(models.Project{}, models.Language{}, models.User{}, models.Group{}, models.Role{}, models.Policy{}, models.GithubCredential{}, models.Provider{})
 		if err != nil {
 			return
 		}

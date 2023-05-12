@@ -1,10 +1,13 @@
 package repository
 
-import "github.com/nepackage/nepackage/models"
+import (
+	"github.com/nepackage/nepackage/database"
+	"github.com/nepackage/nepackage/models"
+)
 
 func GetRoles() ([]models.Role, error) {
 	var roles []models.Role
-	if err := models.DB.Find(&roles).Error; err != nil {
+	if err := database.DB.Find(&roles).Error; err != nil {
 		return nil, err
 	}
 	return roles, nil
@@ -12,7 +15,7 @@ func GetRoles() ([]models.Role, error) {
 
 func GetRoleById(roleId uint) (*models.Role, error) {
 	var role *models.Role
-	if err := models.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := database.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
 		return nil, err
 	}
 
@@ -20,7 +23,7 @@ func GetRoleById(roleId uint) (*models.Role, error) {
 }
 
 func CreateRole(role *models.Role) (bool, error) {
-	if err := models.DB.Create(&role).Error; err != nil {
+	if err := database.DB.Create(&role).Error; err != nil {
 		return false, err
 	}
 
@@ -30,7 +33,7 @@ func CreateRole(role *models.Role) (bool, error) {
 func UpdateRole(roleId uint, roleInput models.RoleUpdate) (*models.RoleUpdate, error) {
 	var role models.Role
 
-	if err := models.DB.Where("id = ?", roleId).Model(&role).Updates(roleInput).Error; err != nil {
+	if err := database.DB.Where("id = ?", roleId).Model(&role).Updates(roleInput).Error; err != nil {
 		return nil, err
 	}
 
@@ -39,10 +42,10 @@ func UpdateRole(roleId uint, roleInput models.RoleUpdate) (*models.RoleUpdate, e
 
 func DeleteRole(roleId uint) (bool, error) {
 	var role models.Role
-	if err := models.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
+	if err := database.DB.Where("id = ?", roleId).First(&role).Error; err != nil {
 		return false, err
 	}
-	if err := models.DB.Delete(&role).Error; err != nil {
+	if err := database.DB.Delete(&role).Error; err != nil {
 		return false, err
 	}
 

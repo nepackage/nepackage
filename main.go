@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/nepackage/nepackage/models"
+	"github.com/nepackage/nepackage/config"
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/routes"
-	"github.com/nepackage/nepackage/utils"
 )
 
 func main() {
-	models.ConnectDatabase()
-	utils.RoleAdminCreation()
-	utils.PolicyAdminCreation()
-	utils.GroupAdminCreation()
-	utils.AdminCreation()
+	database.ConnectDatabase()
+	config.RoleAdminCreation()
+	config.PolicyAdminCreation()
+	config.GroupAdminCreation()
+	config.AdminCreation()
 	router := routes.InitRouter()
 	router.Run()
 

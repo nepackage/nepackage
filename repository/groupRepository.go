@@ -1,12 +1,13 @@
 package repository
 
 import (
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/models"
 )
 
 func GetGroups() ([]models.Group, error) {
 	var groups []models.Group
-	if err := models.DB.Find(&groups).Error; err != nil {
+	if err := database.DB.Find(&groups).Error; err != nil {
 		return nil, err
 	}
 	return groups, nil
@@ -14,7 +15,7 @@ func GetGroups() ([]models.Group, error) {
 
 func GetGroupById(groupId uint) (*models.Group, error) {
 	var group *models.Group
-	if err := models.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
+	if err := database.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
 		return nil, err
 	}
 
@@ -22,7 +23,7 @@ func GetGroupById(groupId uint) (*models.Group, error) {
 }
 
 func CreateGroup(group *models.Group) (bool, error) {
-	if err := models.DB.Create(&group).Error; err != nil {
+	if err := database.DB.Create(&group).Error; err != nil {
 		return false, err
 	}
 
@@ -32,7 +33,7 @@ func CreateGroup(group *models.Group) (bool, error) {
 func UpdateGroup(groupId uint, groupInput models.GroupUpdate) (*models.GroupUpdate, error) {
 	var group models.Group
 
-	if err := models.DB.Where("id = ?", groupId).Model(&group).Updates(groupInput).Error; err != nil {
+	if err := database.DB.Where("id = ?", groupId).Model(&group).Updates(groupInput).Error; err != nil {
 		return nil, err
 	}
 
@@ -41,10 +42,10 @@ func UpdateGroup(groupId uint, groupInput models.GroupUpdate) (*models.GroupUpda
 
 func DeleteGroup(groupId uint) (bool, error) {
 	var group models.Group
-	if err := models.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
+	if err := database.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
 		return false, err
 	}
-	if err := models.DB.Delete(&group).Error; err != nil {
+	if err := database.DB.Delete(&group).Error; err != nil {
 		return false, err
 	}
 

@@ -1,10 +1,11 @@
-package utils
+package config
 
 import (
 	"encoding/base64"
 	"log"
 	"time"
 
+	"github.com/nepackage/nepackage/database"
 	"github.com/nepackage/nepackage/models"
 )
 
@@ -20,14 +21,6 @@ func AdminCreation() {
 	adminUser.Group = 1
 	adminUser.State = true
 
-	if err := CheckIfMailExists(adminUser.Mail); err != nil {
-		return
-	}
-
-	if err := CheckIfUsernameExists(adminUser.Username); err != nil {
-		return
-	}
-
 	passwordOutput := base64.StdEncoding.EncodeToString([]byte(adminUser.Password))
 	log.Println("Password encoded in base64: ", passwordOutput)
 
@@ -36,18 +29,18 @@ func AdminCreation() {
 	}
 
 	user := models.User{Name: adminUser.Name, Lastname: adminUser.Lastname, Username: adminUser.Username, Mail: adminUser.Mail, Password: adminUser.Password, Role: adminUser.Role, Group: adminUser.Group, State: adminUser.State, CreatedAt: time.Now(), UpdatedAt: adminUser.UpdatedAt}
-	models.DB.Create(&user)
+	database.DB.Create(&user)
 }
 
 func GroupAdminCreation() {
 	var groupAdmin models.Group
 	groupAdmin.Name = "Administrators"
-	result := models.DB.Where("name = ?", groupAdmin.Name).Find(&groupAdmin)
+	result := database.DB.Where("name = ?", groupAdmin.Name).Find(&groupAdmin)
 	if result.RowsAffected > 0 {
 		return
 	}
 	group := models.Group{Name: groupAdmin.Name, CreatedAt: time.Now(), UpdatedAt: groupAdmin.UpdatedAt}
-	models.DB.Create(&group)
+	database.DB.Create(&group)
 
 }
 
@@ -55,12 +48,12 @@ func RoleAdminCreation() {
 	var roleAdmin models.Role
 	roleAdmin.Name = "Administrators"
 	roleAdmin.Policies = "1"
-	result := models.DB.Where("name = ?", roleAdmin.Name).Find(&roleAdmin)
+	result := database.DB.Where("name = ?", roleAdmin.Name).Find(&roleAdmin)
 	if result.RowsAffected > 0 {
 		return
 	}
 	role := models.Role{Name: roleAdmin.Name, Policies: roleAdmin.Policies}
-	models.DB.Create(&role)
+	database.DB.Create(&role)
 }
 
 func PolicyAdminCreation() {
@@ -68,10 +61,10 @@ func PolicyAdminCreation() {
 	policyAdmin.Name = "Administrators"
 	policyAdmin.Path = "/*"
 	policyAdmin.AuthorizedMethods = "GET,POST,PATCH,UPDATE,DELETE"
-	result := models.DB.Where("name = ?", policyAdmin.Name).Find(&policyAdmin)
+	result := database.DB.Where("name = ?", policyAdmin.Name).Find(&policyAdmin)
 	if result.RowsAffected > 0 {
 		return
 	}
 	policy := models.Policy{Name: policyAdmin.Name, Path: policyAdmin.Path, AuthorizedMethods: policyAdmin.AuthorizedMethods}
-	models.DB.Create(&policy)
+	database.DB.Create(&policy)
 }

@@ -77,3 +77,5 @@ require (
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/driver/sqlite v1.4.4
 )
+
+retract v0.0.0-20230412175720-7eff179c364f
